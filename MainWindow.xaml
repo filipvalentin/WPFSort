@@ -4,34 +4,62 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Visual sorting algorithms" Height="620" Width="1300">
+        Title="Visual sorting algorithms" Height="620" Width="1320"
+        SizeChanged="Window_SizeChanged"
+        MinHeight="620" MinWidth="500"
+        >
     <Grid>
-        <Label Content="Select the algorithm:" HorizontalAlignment="Left" Margin="13,5,0,0" VerticalAlignment="Top" Height="30" Width="213"/>
-        <ComboBox x:Name="CBox" HorizontalAlignment="Left" Margin="15,35,0,0" VerticalAlignment="Top" Width="213" Height="22">
-            <ComboBoxItem Content="Naive sort O(n^2)"/>
-            <ComboBoxItem Content="Quicksort O(nlogn)"/>
-            <ComboBoxItem Content=""/>
-        </ComboBox>
+        <Label Content="Select the algorithm:" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Height="26" Width="122"/>
+        <ComboBox x:Name="CBox" HorizontalAlignment="Left" Margin="132,16,0,0" VerticalAlignment="Top" Width="133" Height="22" SelectionChanged="CBox_SelectionChanged">
+            <ComboBoxItem Content="Naive sort" />
+            <ComboBoxItem Content="Bubble sort"/>
+            <ComboBoxItem Content="Quick sort"/>
+            <ComboBoxItem Content="Selection sort"/>
+            <ComboBoxItem Content="Merge sort"/>
+            <ComboBoxItem Content="Heap sort"/>
+            <ComboBoxItem Content="Counting sort"/>
+            <ComboBoxItem Content="Bucket sort"/>
+            <ComboBoxItem Content="Radix sort"/>
+            <ComboBoxItem Content="Odd-Even sort"/>
+            <!--<ComboBoxItem Content=""/>-->
 
-        <RadioButton x:Name="RSRadial" GroupName="group1" Content="Random sample" HorizontalAlignment="Left" Margin="15,92,0,0" VerticalAlignment="Top" Checked="RadioButton_Checked_RandomSample"/>
-        <Label Content="Select the sample size:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top" Height="29" Width="130"/>
-        <Slider x:Name="RandomSample_Slider" Minimum="2" Maximum="100" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="False" HorizontalAlignment="Left" Margin="15,136,0,0" VerticalAlignment="Top" Width="213" />
-        <Label Content="Current max size:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelMaxsize" Content="{Binding ElementName=RandomSample_Slider, Path=Value}" HorizontalAlignment="Left" Margin="110,154,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="GenerateSampleButton"  IsEnabled="true" HorizontalAlignment="Left" Margin="161,90,0,0" VerticalAlignment="Top" Click="RandomSampleButton_Click" Height="38" Width="59" Background="#FFDDDEE5" Foreground="#FF414141" BorderBrush="#FFC4C4C4">
-            <TextBlock Height="32" Width="55" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" >Generate<LineBreak/>sample</TextBlock>
+        </ComboBox>
+        <RadioButton GroupName="sortOrder" Content="Ascending" HorizontalAlignment="Left" Margin="15,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Ascending_Checked"/>
+        <RadioButton GroupName="sortOrder" Content="Descending" HorizontalAlignment="Left" Margin="132,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Descending_Checked"/>
+        <Label Content="Render tick:" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="RenderTickBox" Text="0" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="82,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="4" TextChanged="RenderTickBox_TextChanged"/>
+
+
+        <RadioButton x:Name="RSRadial" GroupName="group1" Content="Random sample" HorizontalAlignment="Left" Margin="15,116,0,0" VerticalAlignment="Top" Checked="RadioButton_RandomSample_Checked" ToolTip="Press the 'Generate sample' button and then the 'Sort' button" Width="106" />
+        <Label Content="Max sample size:&#xA;" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" Height="26" Width="106"/>
+        <TextBox x:Name="RandomSampleSizeBox" IsEnabled="False" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="114,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="5" TextChanged="RandomSampleSizeBox_TextChanged"/>
+        <Label Content="Sample count:" HorizontalAlignment="Left" Margin="10,162,0,0" VerticalAlignment="Top" Height="26" Width="112" ToolTip="MAX: 500"/>
+        <TextBox x:Name="RandomSampleCountBox" IsEnabled="False" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="114,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="3" TextChanged="RandomSampleCountBox_TextChanged"/>
+
+
+        <Button x:Name="GenerateSampleButton" IsEnabled="false" HorizontalAlignment="Left" Margin="177,139,0,0" VerticalAlignment="Top" Click="RandomSampleButton_Click" Height="49" Width="56" Background="#FFDDDEE5" Foreground="#FF414141" BorderBrush="#FFC4C4C4">
+            <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Center" TextAlignment="Center">Generate<LineBreak/> sample</TextBlock>
         </Button>
 
-        <RadioButton GroupName="group1" Content="Custom sample" HorizontalAlignment="Left" Margin="15,213,0,0" VerticalAlignment="Top" Checked="RadioButton_Checked_CustomSample"/>
+        <RadioButton GroupName="group1" Content="Custom sample" HorizontalAlignment="Left" Margin="15,213,0,0" VerticalAlignment="Top" Checked="RadioButton_CustomSample_Checked" ToolTip="After entering the numbers, press Enter and then the 'Sort' button" />
         <Label Content="Input text [accepts spaces and commas]:" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Width="234"/>
-        <TextBox x:Name="InputTextBox" IsEnabled="False" KeyDown="OnKeyDownHandler_InputBox" HorizontalAlignment="Left" Margin="15,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="122" VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="InputTextBox" IsEnabled="False" KeyDown="OnKeyDownHandler_InputBox" HorizontalAlignment="Left" Margin="15,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="122" VerticalScrollBarVisibility="Auto" TextChanged="InputTextBox_TextChanged" />
         <Label Content="Output text:" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="233"/>
-        <TextBox x:Name="OutputTextBox" IsEnabled="False" HorizontalAlignment="Left" Margin="15,404,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="129" VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="OutputTextBox" IsEnabled="False" IsReadOnly="True" HorizontalAlignment="Left" Margin="15,404,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="129" VerticalScrollBarVisibility="Auto" />
 
-        <Button Content="Sort!" HorizontalAlignment="Left" Margin="82,541,0,0" VerticalAlignment="Top" Click="SortButton_Click" Height="34" Width="76"/>
+        <Button x:Name="sortButton" IsEnabled="False" Content="Sort" HorizontalAlignment="Left" Margin="82,541,0,0" VerticalAlignment="Top" Click="SortButton_Click" Height="34" Width="76"/>
 
-        <Canvas x:Name="canvas" Margin="286,4,2,0" RenderTransformOrigin="0.5,0.5" Height="587" VerticalAlignment="Top"/>
+        <Canvas x:Name="canvas" Margin="270,0,20,10"/>
+        <Border BorderBrush="#FF8D8D91" Margin="270,0,20,10" BorderThickness="1"/>
+
+
+
 
 
     </Grid>
 </Window>
+<!--<Slider x:Name="RandomSample_Slider" Minimum="2" Maximum="100" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="False" HorizontalAlignment="Left" Margin="15,136,0,0" VerticalAlignment="Top" Width="213" />
+        
+        <Label Content="Current max size:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelMaxsize" Content="{Binding ElementName=RandomSample_Slider, Path=Value}" HorizontalAlignment="Left" Margin="110,154,0,0" VerticalAlignment="Top"/>
+        -->
