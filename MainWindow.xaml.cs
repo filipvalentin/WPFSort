@@ -8,23 +8,23 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WPFSort{
+namespace WPFSort {
 
-    public partial class MainWindow : Window{
+    public partial class MainWindow : Window {
 
         bool sampleType;    //true = random; false = custom
         double sampleCount = 2;
         List<int>? sampleList;
- 
-        int maxSample=0;
+
+        int maxSample = 0;
 
         class ValueRectanglePair {
             public int sampleValue;
             public Rectangle sampleRectangle;
-		}
+        }
 
         List<ValueRectanglePair> sampleValueRectangleList = new();
-        public MainWindow(){
+        public MainWindow() {
             InitializeComponent();
         }
 
@@ -44,7 +44,7 @@ namespace WPFSort{
                 Canvas.SetLeft(line, i * (canvas.ActualWidth / sampleCount));
                 Canvas.SetTop(line, canvas.ActualHeight - toAdd[i] * reductionRatio);
 
-                sampleValueRectangleList.Add( new ValueRectanglePair{sampleValue=toAdd[i], sampleRectangle=line });
+                sampleValueRectangleList.Add(new ValueRectanglePair { sampleValue = toAdd[i], sampleRectangle = line });
             }
         }
 
@@ -54,24 +54,24 @@ namespace WPFSort{
             for (int i = 0; i < sampleValueRectangleList.Count; i++) {
                 sampleValueRectangleList[i].sampleRectangle.Width = canvas.ActualWidth / sampleCount - 1;
                 sampleValueRectangleList[i].sampleRectangle.Height = (double)sampleValueRectangleList[i].sampleValue * reductionRatio;
-                Canvas.SetLeft( sampleValueRectangleList[i].sampleRectangle, i * (canvas.ActualWidth / sampleCount));
-                Canvas.SetTop( sampleValueRectangleList[i].sampleRectangle, canvas.ActualHeight - sampleValueRectangleList[i].sampleValue * reductionRatio);
+                Canvas.SetLeft(sampleValueRectangleList[i].sampleRectangle, i * (canvas.ActualWidth / sampleCount));
+                Canvas.SetTop(sampleValueRectangleList[i].sampleRectangle, canvas.ActualHeight - sampleValueRectangleList[i].sampleValue * reductionRatio);
             }
 
         }
 
-        private async void SortButton_Click(object sender, RoutedEventArgs e){
+        private async void SortButton_Click(object sender, RoutedEventArgs e) {
 
-            if (sampleType == true){ //random sample
+            if (sampleType == true) { //random sample
                 await Sort();
             }
             else { //given sample
 
-                if(InputTextBox.Text.Any(x => char.IsLetter(x))) {
-                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!","Ints only!");
+                if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
+                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
                     InputTextBox.Text = "";
-				}
-                else{   //de mutat
+                }
+                else {   //de mutat
 
                     List<int> ints = new();
                     ints = FormatStringToint(InputTextBox.Text.ToCharArray());
@@ -87,8 +87,8 @@ namespace WPFSort{
 
 
 
-        
-		private void RandomSampleButton_Click(object sender, RoutedEventArgs e) {
+
+        private void RandomSampleButton_Click(object sender, RoutedEventArgs e) {
             ClearList3();
             int count = int.Parse(RandomSampleCountBox.Text);
             int maxsize = int.Parse(RandomSampleSizeBox.Text);
@@ -97,7 +97,7 @@ namespace WPFSort{
 
             for (int i = 0; i < count; i++) {
                 var ran = new Random();
-                int currInt = (int)ran.NextInt64(1, maxsize+1);
+                int currInt = (int)ran.NextInt64(1, maxsize + 1);
                 sampleList.Add(currInt);
                 maxSample = Math.Max(maxSample, currInt);
             }
@@ -105,7 +105,6 @@ namespace WPFSort{
             sampleCount = count;
 
             AddOnCanvas3(sampleList);
-            
         }
 
         private void OnKeyDownHandler_InputBox(object sender, KeyEventArgs e) {     //deprecated
@@ -142,7 +141,7 @@ namespace WPFSort{
 
         private async Task Sort() {
             sortButton.IsEnabled = false;
-            switch (CBox.SelectedIndex) {                
+            switch (CBox.SelectedIndex) {
                 case 0: await Algo_NaiveS(); break;
                 case 1: Algo_BubbleS(); break;
                 case 2: Algo_QuickS(); break;
@@ -157,7 +156,7 @@ namespace WPFSort{
             sortButton.IsEnabled = true;
         }
 
-		private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e) {
+        private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e) {
             ClearList3();
 
             if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
@@ -175,5 +174,5 @@ namespace WPFSort{
 
             AddOnCanvas3(sampleList);
         }
-	}
+    }
 }
