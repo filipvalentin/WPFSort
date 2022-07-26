@@ -141,19 +141,34 @@ namespace WPFSort {
 
         private async Task Sort() {
             sortButton.IsEnabled = false;
+            CBox.IsEnabled = false;
+            sortOrderRButton_Ascending.IsEnabled = false;
+            sortOrderRButton_Descending.IsEnabled = false;
+            randomSampleButton.IsEnabled = false;
+            customSampleRButton.IsEnabled = false;
+            if(customSampleRButton.IsChecked==true) InputTextBox.IsEnabled = false;
+            
+
             switch (CBox.SelectedIndex) {
                 case 0: await Algo_NaiveS(); break;
-                case 1: Algo_BubbleS(); break;
-                case 2: Algo_QuickS(); break;
-                case 3: Algo_SelectionS(); break;
-                case 4: Algo_MergeS(); break;
-                case 5: Algo_HeapS(); break;
-                case 6: Algo_CountingS(); break;
-                case 7: Algo_BucketS(); break;
-                case 8: Algo_RadixS(); break;
-                case 9: Algo_OddEvenS(); break;
+                case 1: await Algo_BubbleS(); break;
+                case 2: await Algo_QuickS(); break;
+                case 3: await Algo_SelectionS(); break;
+                case 4: await Algo_MergeS(); break;
+                case 5: await Algo_HeapS(); break;
+                case 6: await Algo_CountingS(); break;
+                case 7: await Algo_BucketS(); break;
+                case 8: await Algo_RadixS(); break;
+                case 9: await Algo_OddEvenS(); break;
             }
+
             sortButton.IsEnabled = true;
+            CBox.IsEnabled = true;
+            sortOrderRButton_Ascending.IsEnabled = true;
+            sortOrderRButton_Descending.IsEnabled = true;
+            randomSampleButton.IsEnabled = true;
+            customSampleRButton.IsEnabled = true;
+            if (customSampleRButton.IsChecked == true) InputTextBox.IsEnabled = true;
         }
 
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e) {

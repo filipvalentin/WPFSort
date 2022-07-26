@@ -26,13 +26,25 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			b.Stroke = Brushes.Black; b.Fill = Brushes.Black;
 		}
 
-		private bool VisualCompare(Rectangle a, Rectangle b) {
-			if (sortingOrder==false) {
+		private bool VisualCompare1(Rectangle a, Rectangle b) {
+			if (sortingOrder==true) {	//ascending
+				if (a.Height < b.Height) return true;
+					else return false;				
+			}
+			if (sortingOrder==false) {	//descending
 				if (a.Height > b.Height) return true;
 				else return false;
 			}
-			if (sortingOrder==true) {
+			return false;
+		}
+
+		private bool VisualCompare2(Rectangle a, Rectangle b) {
+			if (sortingOrder == false) { //descending
 				if (a.Height < b.Height) return true;
+				else return false;
+			}
+			if (sortingOrder == true) {    //ascending
+				if (a.Height > b.Height) return true;
 				else return false;
 			}
 			return false;
@@ -52,44 +64,64 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
 				for (int j = 0; j < sampleValueRectangleList.Count; j++) {
 					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
-					if (VisualCompare(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle))
+					if (VisualCompare1(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle))
 						VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[j]);
 				}
 			}
 		}
 
-		private void Algo_BubbleS() { 
-		
-		}
+		private async Task Algo_BubbleS() {
 
-		private void Algo_QuickS() {
+			for (int step = 0; step < (sampleValueRectangleList.Count - 1); ++step) {
 
-		}
+				int swapped = 0;
 
-		private void Algo_SelectionS() {
+				for (int i = 0; i < (sampleValueRectangleList.Count - step - 1); ++i) {
 
-		}
+					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i + 1].sampleRectangle);
 
+					if (VisualCompare2(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i+1].sampleRectangle)) {
 
-		private void Algo_MergeS() {
+						VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[i + 1]);
 
-		}
+						swapped = 1;
+					}
+				}
 
-		private void Algo_HeapS() {
-
-		}
-
-		private void Algo_CountingS() {
-
-		}
-		private void Algo_BucketS() {
-
-		}
-		private void Algo_RadixS() {
+				if (swapped == 0)
+					break;
+			}
 
 		}
 
-		private void Algo_OddEvenS() {
+		private async Task Algo_QuickS() {
+
+		}
+
+		private async Task Algo_SelectionS() {
+
+		}
+
+
+		private async Task Algo_MergeS() {
+
+		}
+
+		private async Task Algo_HeapS() {
+
+		}
+
+		private async Task Algo_CountingS() {
+
+		}
+		private async Task Algo_BucketS() {
+
+		}
+		private async Task Algo_RadixS() {
+
+		}
+
+		private async Task Algo_OddEvenS() {
 
 		}
 

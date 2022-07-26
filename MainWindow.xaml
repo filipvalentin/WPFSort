@@ -24,16 +24,16 @@
             <!--<ComboBoxItem Content=""/>-->
 
         </ComboBox>
-        <RadioButton GroupName="sortOrder" Content="Ascending" HorizontalAlignment="Left" Margin="15,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Ascending_Checked"/>
-        <RadioButton GroupName="sortOrder" Content="Descending" HorizontalAlignment="Left" Margin="132,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Descending_Checked"/>
-        <Label Content="Render tick:" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="sortOrderRButton_Ascending" GroupName="sortOrder" Content="Ascending" HorizontalAlignment="Left" Margin="15,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Ascending_Checked"/>
+        <RadioButton x:Name="sortOrderRButton_Descending" GroupName="sortOrder" Content="Descending" HorizontalAlignment="Left" Margin="132,45,0,0" VerticalAlignment="Top" Checked="SortOrder_Descending_Checked"/>
+        <Label Content="Render tick:" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" ToolTip="Tick: pause in miliseconds between each selection. 0 means instant visual sorting. If you want to terminate the visual sorting, just introduce 0 in the box."/>
         <TextBox x:Name="RenderTickBox" Text="0" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="82,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="4" TextChanged="RenderTickBox_TextChanged"/>
 
 
-        <RadioButton x:Name="RSRadial" GroupName="group1" Content="Random sample" HorizontalAlignment="Left" Margin="15,116,0,0" VerticalAlignment="Top" Checked="RadioButton_RandomSample_Checked" ToolTip="Press the 'Generate sample' button and then the 'Sort' button" Width="106" />
-        <Label Content="Max sample size:&#xA;" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" Height="26" Width="106"/>
+        <RadioButton x:Name="randomSampleButton" GroupName="group1" Content="Random sample" HorizontalAlignment="Left" Margin="15,116,0,0" VerticalAlignment="Top" Checked="RadioButton_RandomSample_Checked" ToolTip="Press the 'Generate sample' button and then the 'Sort' button" Width="106" />
+        <Label Content="Max sample size:&#xA;" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" Height="26" Width="106" ToolTip="Any positive 32 bit integer. The program will automatically resize the samples to fit the biggest one [possible loss of visual accuracy]."/>
         <TextBox x:Name="RandomSampleSizeBox" IsEnabled="False" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="114,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="5" TextChanged="RandomSampleSizeBox_TextChanged"/>
-        <Label Content="Sample count:" HorizontalAlignment="Left" Margin="10,162,0,0" VerticalAlignment="Top" Height="26" Width="112" ToolTip="MAX: 500"/>
+        <Label Content="Sample count:" HorizontalAlignment="Left" Margin="10,162,0,0" VerticalAlignment="Top" Height="26" Width="112" ToolTip="MAX: 999"/>
         <TextBox x:Name="RandomSampleCountBox" IsEnabled="False" PreviewTextInput="PreviewTextInput_SampleBoxes" HorizontalAlignment="Left" Margin="114,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Height="20" TextAlignment="Right" MaxLines="1" MaxLength="3" TextChanged="RandomSampleCountBox_TextChanged"/>
 
 
@@ -41,7 +41,7 @@
             <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Center" TextAlignment="Center">Generate<LineBreak/> sample</TextBlock>
         </Button>
 
-        <RadioButton GroupName="group1" Content="Custom sample" HorizontalAlignment="Left" Margin="15,213,0,0" VerticalAlignment="Top" Checked="RadioButton_CustomSample_Checked" ToolTip="After entering the numbers, press Enter and then the 'Sort' button" />
+        <RadioButton x:Name="customSampleRButton" GroupName="group1" Content="Custom sample" HorizontalAlignment="Left" Margin="15,213,0,0" VerticalAlignment="Top" Checked="RadioButton_CustomSample_Checked" ToolTip="After entering the numbers, press Enter and then the 'Sort' button" />
         <Label Content="Input text [accepts spaces and commas]:" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Width="234"/>
         <TextBox x:Name="InputTextBox" IsEnabled="False" KeyDown="OnKeyDownHandler_InputBox" HorizontalAlignment="Left" Margin="15,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="122" VerticalScrollBarVisibility="Auto" TextChanged="InputTextBox_TextChanged" />
         <Label Content="Output text:" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="233"/>
