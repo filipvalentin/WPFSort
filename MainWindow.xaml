@@ -13,8 +13,8 @@
         <ComboBox x:Name="CBox" HorizontalAlignment="Left" Margin="132,16,0,0" VerticalAlignment="Top" Width="133" Height="22" SelectionChanged="CBox_SelectionChanged">
             <ComboBoxItem Content="Naive sort" />
             <ComboBoxItem Content="Bubble sort"/>
-            <ComboBoxItem Content="Quick sort"/>
             <ComboBoxItem Content="Selection sort"/>
+            <ComboBoxItem Content="Quick sort"/>            
             <ComboBoxItem Content="Merge sort"/>
             <ComboBoxItem Content="Heap sort"/>
             <ComboBoxItem Content="Counting sort"/>

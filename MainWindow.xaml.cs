@@ -153,8 +153,8 @@ namespace WPFSort {
                 case 0: await Algo_NaiveS(); break;
                 case 1: await Algo_BubbleS(); break;
                 case 2: await Algo_QuickS(); break;
-                case 3: await Algo_SelectionS(); break;
-                case 4: await Algo_MergeS(); break;
+                case 3: await Algo_MergeS(); break;
+                case 4: await Algo_SelectionS(); break;
                 case 5: await Algo_HeapS(); break;
                 case 6: await Algo_CountingS(); break;
                 case 7: await Algo_BucketS(); break;
@@ -179,12 +179,10 @@ namespace WPFSort {
                 InputTextBox.Text = "";
             }
             else {
-
                 List<int> ints = new();
                 ints = FormatStringToint(InputTextBox.Text.ToCharArray());
                 sampleCount = ints.Count;
                 sampleList = ints;
-                //OutputTextBox.Text += FortmatIntToString(ints);
             }
 
             AddOnCanvas3(sampleList);
