@@ -59,6 +59,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 		}
 
 
+
 		private async Task Algo_NaiveS() {
 
 			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
@@ -69,6 +70,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				}
 			}
 		}
+
+
 
 		private async Task Algo_BubbleS() {
 
@@ -85,8 +88,28 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 					break;
 			}
 		}
-		
-		 async Task<int> partition(List<ValueRectanglePair> arr, int low, int high) {
+
+
+
+		private async Task Algo_SelectionS() {
+
+			for (int i = 0; i < sampleValueRectangleList.Count - 1; i++) {
+				int min_idx = i;
+				for (int j = i + 1; j < sampleValueRectangleList.Count; j++) {
+					await ChangeColor(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle);
+					if (VisualCompare1(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle))
+						min_idx = j;
+				}
+				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[min_idx]);
+			}
+		}
+
+
+
+		private async Task Algo_QuickS() {
+			await quickSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
+		}
+		async Task<int> partition(List<ValueRectanglePair> arr, int low, int high) {
 			//int pivot = arr[high].sampleValue;
 			int i = low - 1;
 
@@ -109,30 +132,12 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				await quickSort(arr, partitionIndex + 1, high);
 			}
 		}
-		
-		private async Task Algo_QuickS() {
-
-			await quickSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
-
-		}
-
-		private async Task Algo_SelectionS() {
-
-			for (int i = 0; i < sampleValueRectangleList.Count - 1; i++) {
-				int min_idx = i;
-				for (int j = i + 1; j < sampleValueRectangleList.Count; j++){
-					await ChangeColor(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle);
-					if (VisualCompare1(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle))
-						min_idx = j;
-				}
-				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[min_idx]);
-			}
-		}
 
 
 		
-
-
+		private async Task Algo_MergeS() {		//wanky rendering red lines
+			await mergeSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
+		}
 		async Task merge(List<ValueRectanglePair> arr, int l, int m, int r) {
 			int n1 = m - l + 1;
 			int n2 = r - m;
@@ -152,7 +157,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 			Action<ValueRectanglePair, int> assignTo_sampleValueRectangleList = (toAssign, newValue) => {
 				Rectangle toSwap = toAssign.sampleRectangle;
-				toSwap.Height = (double) newValue * (canvas.ActualHeight / maxSample);
+				toSwap.Height = (double)newValue * (canvas.ActualHeight / maxSample);
 				VisualSwap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
@@ -160,21 +165,21 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			while (i < n1 && j < n2) {
 				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
 				if (sortingOrder == true) {//ascendent
-					if (L[i] <= R[j]) {						
+					if (L[i] <= R[j]) {
 						assignTo_sampleValueRectangleList(arr[k], L[i]);//arr[k] = L[i];
 						i++;
 					}
-					else {						
+					else {
 						assignTo_sampleValueRectangleList(arr[k], R[j]);//arr[k] = R[j];
 						j++;
 					}
 				}
 				else {//descendent
-					if (L[i] >= R[j]) {						
+					if (L[i] >= R[j]) {
 						assignTo_sampleValueRectangleList(arr[k], L[i]);//arr[k] = L[i];
 						i++;
 					}
-					else {						
+					else {
 						assignTo_sampleValueRectangleList(arr[k], R[j]);//arr[k] = R[j];
 						j++;
 					}
@@ -183,7 +188,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			}
 
 			while (i < n1) {
-				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);				
+				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);
 
 				assignTo_sampleValueRectangleList(arr[k], L[i]);//arr[k] = L[i];
 
@@ -192,7 +197,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			}
 
 			while (j < n2) {
-				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);				
+				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);
 
 				assignTo_sampleValueRectangleList(arr[k], R[j]);//arr[k] = R[j];
 
@@ -200,7 +205,6 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				k++;
 			}
 		}
-
 		async Task mergeSort(List<ValueRectanglePair> arr, int l, int r) {
 			if (l < r) {
 				int m = l + (r - l) / 2;
@@ -211,13 +215,52 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				await merge(arr, l, m, r);
 			}
 		}
-		private async Task Algo_MergeS() {		//wanky
-			await mergeSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
-		}
+
+
 
 		private async Task Algo_HeapS() {
-
+			await heapSort(sampleValueRectangleList);
 		}
+		async Task heapSort(List<ValueRectanglePair> arr) {
+
+			// Build heap (rearrange array)
+			for (int i = arr.Count / 2 - 1; i >= 0; i--)
+				await heapify(arr, arr.Count, i);
+
+			// One by one extract an element from heap
+			for (int i = arr.Count - 1; i > 0; i--) {
+				// Move current root to end
+				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[0].sampleRectangle);
+				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[0]);
+
+				//int temp = arr[0];
+				//arr[0] = arr[i];
+				//arr[i] = temp;
+
+				// call max heapify on the reduced heap
+				await heapify(arr, i, 0);
+			}
+		}
+		async Task heapify(List<ValueRectanglePair> arr, int n, int i) {
+			int largest = i;
+			int l = 2 * i + 1; // left = 2*i + 1
+			int r = 2 * i + 2; // right = 2*i + 2
+
+			if (l < n && VisualCompare2(arr[l].sampleRectangle, arr[largest].sampleRectangle) ) //arr[l].sampleRectangle.Height > arr[largest].sampleRectangle.Height
+				largest = l;
+
+			if (r < n && VisualCompare2(arr[r].sampleRectangle, arr[largest].sampleRectangle) ) //arr[r].sampleRectangle.Height > arr[largest].sampleRectangle.Height)
+				largest = r;
+
+			if (largest != i) {
+				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[largest].sampleRectangle);
+				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[largest]);
+
+				await heapify(arr, n, largest);
+			}
+		}
+
+
 
 		private async Task Algo_CountingS() {
 

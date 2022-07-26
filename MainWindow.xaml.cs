@@ -152,9 +152,9 @@ namespace WPFSort {
             switch (CBox.SelectedIndex) {
                 case 0: await Algo_NaiveS(); break;
                 case 1: await Algo_BubbleS(); break;
-                case 2: await Algo_QuickS(); break;
-                case 3: await Algo_MergeS(); break;
-                case 4: await Algo_SelectionS(); break;
+                case 2: await Algo_SelectionS();  break;
+                case 3: await Algo_QuickS(); break;
+                case 4: await Algo_MergeS();break;
                 case 5: await Algo_HeapS(); break;
                 case 6: await Algo_CountingS(); break;
                 case 7: await Algo_BucketS(); break;
