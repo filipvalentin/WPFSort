@@ -17,6 +17,7 @@ namespace WPFSort {
         List<int>? sampleList;
 
         int maxSample = 0;
+        int minSample = int.MaxValue;
 
         class ValueRectanglePair {
             public int sampleValue;
@@ -93,6 +94,7 @@ namespace WPFSort {
             int count = int.Parse(RandomSampleCountBox.Text);
             int maxsize = int.Parse(RandomSampleSizeBox.Text);
             maxSample = 0;
+            minSample = int.MaxValue;
             sampleList = new();
 
             for (int i = 0; i < count; i++) {
@@ -100,6 +102,7 @@ namespace WPFSort {
                 int currInt = (int)ran.NextInt64(1, maxsize + 1);
                 sampleList.Add(currInt);
                 maxSample = Math.Max(maxSample, currInt);
+                minSample = Math.Min(minSample, currInt);
             }
 
             sampleCount = count;
@@ -157,9 +160,8 @@ namespace WPFSort {
                 case 4: await Algo_MergeS();break;
                 case 5: await Algo_HeapS(); break;
                 case 6: await Algo_CountingS(); break;
-                case 7: await Algo_BucketS(); break;
-                case 8: await Algo_RadixS(); break;
-                case 9: await Algo_OddEvenS(); break;
+                case 7: await Algo_RadixS(); break;
+                case 8: await Algo_BitonicS(); break;
             }
 
             sortButton.IsEnabled = true;

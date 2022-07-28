@@ -21,9 +21,10 @@ namespace WPFSort {
 
 
         private List<int> FormatStringToint(char[] toConvert) {
-
             List<int> toReturn = new();
             maxSample = 0;
+            minSample = int.MaxValue;
+
             int i = 0, length = toConvert.Length;
             while (i < length) {
                 int index = i;
@@ -41,7 +42,8 @@ namespace WPFSort {
 
                 int currentInt = int.Parse(currentNumber);
                 toReturn.Add(currentInt);
-                maxSample = Math.Max(currentInt, maxSample);
+                maxSample = Math.Max(maxSample, currentInt);
+                minSample = Math.Min(minSample, currentInt);
 
                 i += index - i + 1;
                 while (i < length && !char.IsDigit(toConvert[i]))
