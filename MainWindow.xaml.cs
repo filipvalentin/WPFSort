@@ -61,33 +61,6 @@ namespace WPFSort {
 
         }
 
-        private async void SortButton_Click(object sender, RoutedEventArgs e) {
-
-            if (sampleType == true) { //random sample
-                await Sort();
-            }
-            else { //given sample
-
-                if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
-                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
-                    InputTextBox.Text = "";
-                }
-                else {   //de mutat
-
-                    List<int> ints = new();
-                    ints = FormatStringToint(InputTextBox.Text.ToCharArray());
-                    sampleCount = ints.Count;
-
-                    await Sort();
-                    OutputTextBox.Clear();
-                    OutputTextBox.Text += FortmatRectIntToString();
-                }
-            }
-
-        }
-
-
-
 
         private void RandomSampleButton_Click(object sender, RoutedEventArgs e) {
             ClearList3();
@@ -139,6 +112,32 @@ namespace WPFSort {
 
             sampleValueRectangleList.Clear();
             GC.Collect();
+        }
+
+
+        private async void SortButton_Click(object sender, RoutedEventArgs e) {
+
+            if (sampleType == true) { //random sample
+                await Sort();
+            }
+            else { //given sample
+
+                if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
+                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
+                    InputTextBox.Text = "";
+                }
+                else {   //de mutat
+
+                    List<int> ints = new();
+                    ints = FormatStringToint(InputTextBox.Text.ToCharArray());
+                    sampleCount = ints.Count;
+
+                    await Sort();
+                    OutputTextBox.Clear();
+                    OutputTextBox.Text += FortmatRectIntToString();
+                }
+            }
+
         }
 
 

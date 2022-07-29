@@ -16,7 +16,15 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 		int pauseSlice = 1; //miliseconds, the lowest the platform can support
 		bool sortingOrder; // true = ascending, false = descending
 
-		private async Task ChangeColor(Rectangle a, Rectangle b) {
+		private async Task RectangleVisualSelection(Rectangle a) {
+			a.Stroke = Brushes.Red; a.Fill = Brushes.Red;
+
+			await Task.Delay(pauseSlice);
+
+			a.Stroke = Brushes.Black; a.Fill = Brushes.Black;
+		}
+
+		private async Task RectangleVisualSelection(Rectangle a, Rectangle b) {
 			a.Stroke = Brushes.Red; a.Fill = Brushes.Red;
 			b.Stroke = Brushes.Red; b.Fill = Brushes.Red;
 														  
@@ -50,7 +58,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			return false;
 		}
 
-		private void VisualSwap(ValueRectanglePair a, ValueRectanglePair b) {
+		private void Swap(ValueRectanglePair a, ValueRectanglePair b) {
 			(a.sampleRectangle.Height, b.sampleRectangle.Height) = (b.sampleRectangle.Height, a.sampleRectangle.Height);
 			(a.sampleValue, b.sampleValue) = (b.sampleValue, a.sampleValue);
 
@@ -64,9 +72,9 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
 				for (int j = 0; j < sampleValueRectangleList.Count; j++) {
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
 					if (VisualCompare1(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle))
-						VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[j]);
+						Swap(sampleValueRectangleList[i], sampleValueRectangleList[j]);
 				}
 			}
 		}
@@ -78,9 +86,9 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			for (int step = 0; step < (sampleValueRectangleList.Count - 1); ++step) {
 				int swapped = 0;
 				for (int i = 0; i < (sampleValueRectangleList.Count - step - 1); ++i) {
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i + 1].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i + 1].sampleRectangle);
 					if (VisualCompare2(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i+1].sampleRectangle)) {
-						VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[i + 1]);
+						Swap(sampleValueRectangleList[i], sampleValueRectangleList[i + 1]);
 						swapped = 1;
 					}
 				}
@@ -96,11 +104,11 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			for (int i = 0; i < sampleValueRectangleList.Count - 1; i++) {
 				int min_idx = i;
 				for (int j = i + 1; j < sampleValueRectangleList.Count; j++) {
-					await ChangeColor(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle);
 					if (VisualCompare1(sampleValueRectangleList[j].sampleRectangle, sampleValueRectangleList[min_idx].sampleRectangle))
 						min_idx = j;
 				}
-				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[min_idx]);
+				Swap(sampleValueRectangleList[i], sampleValueRectangleList[min_idx]);
 			}
 		}
 
@@ -113,14 +121,14 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			int i = low - 1;
 
 			for (int j = low; j < high; j++) {
-				await ChangeColor(arr[j].sampleRectangle, arr[j].sampleRectangle);
+				await RectangleVisualSelection(arr[j].sampleRectangle);
 				if (VisualCompare1(arr[j].sampleRectangle, arr[high].sampleRectangle)) {
 					i++;
 
-					VisualSwap(arr[i], arr[j]);
+					Swap(arr[i], arr[j]);
 				}
 			}
-			VisualSwap(arr[i+1], arr[high]); //swap(arr, i + 1, high);
+			Swap(arr[i+1], arr[high]); //swap(arr, i + 1, high);
 			return i + 1;
 		}
 		async Task quickSort(List<ValueRectanglePair> arr, int low, int high) {
@@ -157,12 +165,12 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			Action<ValueRectanglePair, int> assignTo_sampleValueRectangleList = (toAssign, newValue) => {
 				Rectangle toSwap = toAssign.sampleRectangle;
 				toSwap.Height = (double)newValue * (canvas.ActualHeight / maxSample);
-				VisualSwap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
+				Swap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
 			int k = l;
 			while (i < n1 && j < n2) {
-				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[j].sampleRectangle);
 				if (sortingOrder == true) {//ascendent
 					if (L[i] <= R[j]) {
 						assignTo_sampleValueRectangleList(arr[k], L[i]);//arr[k] = L[i];
@@ -187,7 +195,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			}
 
 			while (i < n1) {
-				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList[k].sampleRectangle);
 
 				assignTo_sampleValueRectangleList(arr[k], L[i]);//arr[k] = L[i];
 
@@ -196,7 +204,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			}
 
 			while (j < n2) {
-				await ChangeColor(sampleValueRectangleList[k].sampleRectangle, sampleValueRectangleList[k].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList[k].sampleRectangle);
 
 				assignTo_sampleValueRectangleList(arr[k], R[j]);//arr[k] = R[j];
 
@@ -226,8 +234,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				await heapify(arr, arr.Count, i);
 
 			for (int i = arr.Count - 1; i > 0; i--) {
-				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[0].sampleRectangle);
-				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[0]);
+				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[0].sampleRectangle);
+				Swap(sampleValueRectangleList[i], sampleValueRectangleList[0]);
 
 				await heapify(arr, i, 0);
 			}
@@ -244,8 +252,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				largest = r;
 
 			if (largest != i) {
-				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[largest].sampleRectangle);
-				VisualSwap(sampleValueRectangleList[i], sampleValueRectangleList[largest]);
+				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[largest].sampleRectangle);
+				Swap(sampleValueRectangleList[i], sampleValueRectangleList[largest]);
 
 				await heapify(arr, n, largest);
 			}
@@ -256,7 +264,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			Action<ValueRectanglePair, int> assignTo_sampleValueRectangleList = (toAssign, newValue) => {
 				Rectangle toSwap = toAssign.sampleRectangle;
 				toSwap.Height = (double)newValue * (canvas.ActualHeight / maxSample);
-				VisualSwap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
+				Swap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
 			//int max = arr.Max();
@@ -266,28 +274,28 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			int[] output = new int[sampleValueRectangleList.Count];
 
 			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
-				await ChangeColor(sampleValueRectangleList [i].sampleRectangle, sampleValueRectangleList [i].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList [i].sampleRectangle);
 				count[sampleValueRectangleList[i].sampleValue - minSample]++;
 			}
 			for (int i = 1; i < count.Length; i++) {
 				count[i] += count[i - 1];
 			}
 			for (int i = sampleValueRectangleList.Count - 1; i >= 0; i--) {
-				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 				output[count[sampleValueRectangleList[i].sampleValue - minSample] - 1] = sampleValueRectangleList[i].sampleValue;
 				count[sampleValueRectangleList[i].sampleValue - minSample]--;
 			}
 			if(sortingOrder){
 			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
 				//arr[i] = output[i];
-				await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 				assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[i]);
 				
 			} }
 			else {
 				for (int i = sampleValueRectangleList.Count - 1; i >=0 ; i--) {
 					//arr[i] = output[i];
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 					assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[sampleValueRectangleList.Count-1-i]);
 
 				}
@@ -305,12 +313,13 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				await descendingRadixSort();
 			}
 		}
+
 		private async Task countSort_RadixDedicated(List<ValueRectanglePair> arr, int n, int exp) {
 
 			Action<ValueRectanglePair, int> assignTo_arr = (toAssign, newValue) => {
 				Rectangle toSwap = toAssign.sampleRectangle;
 				toSwap.Height = (double)newValue * (canvas.ActualHeight / maxSample);
-				VisualSwap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
+				Swap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
 			int[] output = new int[n];
@@ -322,27 +331,27 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 			// Store count of occurrences in count[]
 			for (i = 0; i < n; i++){
-				await ChangeColor(arr[i].sampleRectangle, arr[i].sampleRectangle);
+				await RectangleVisualSelection(arr[i].sampleRectangle);
 				count[(arr[i].sampleValue / exp) % 10]++;
 			}
 			for (i = 1; i < 10; i++)
 				count[i] += count[i - 1];
 
 			for (i = n - 1; i >= 0; i--) {
-				await ChangeColor(arr[i].sampleRectangle, arr[i].sampleRectangle);
+				await RectangleVisualSelection(arr[i].sampleRectangle);
 				output[count[(arr[i].sampleValue / exp) % 10] - 1] = arr[i].sampleValue;
 				count[(arr[i].sampleValue / exp) % 10]--;
 			}
 
 			if(sortingOrder){
 				for (i = 0; i < n; i++){
-					await ChangeColor(arr[i].sampleRectangle, arr[i].sampleRectangle);
+					await RectangleVisualSelection(arr[i].sampleRectangle);
 					assignTo_arr(arr[i], output[i]);//arr[i] = output[i];
 				} 
 			}
 			else {
 				for (i = n-1 ; i >=0; i--) {
-					await ChangeColor(arr[i].sampleRectangle, arr[i].sampleRectangle);
+					await RectangleVisualSelection(arr[i].sampleRectangle);
 					assignTo_arr(arr[i], output[n-1-i]);//arr[i] = output[i];
 				}
 			}
@@ -351,7 +360,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			Action<ValueRectanglePair, int> assignTo_arr = (toAssign, newValue) => {
 				Rectangle toSwap = toAssign.sampleRectangle;
 				toSwap.Height = (double)newValue * (canvas.ActualHeight / maxSample);
-				VisualSwap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
+				Swap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
 			int i, exp = 1;
@@ -363,15 +372,15 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 					bucket[i] = 0;
 
 				for (i = 0; i < sampleValueRectangleList.Count; i++){
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 					bucket[9 - sampleValueRectangleList[i].sampleValue / exp % 10]++; }
 				for (i = 1; i < 10; i++)
 					bucket[i] += bucket[i - 1];
 				for (i = sampleValueRectangleList.Count - 1; i >= 0; i--){
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 					b[--bucket[9 - sampleValueRectangleList[i].sampleValue / exp % 10]] = sampleValueRectangleList[i].sampleValue; }
 				for (i = 0; i < sampleValueRectangleList.Count; i++) {
-					await ChangeColor(sampleValueRectangleList[i].sampleRectangle, sampleValueRectangleList[i].sampleRectangle);
+					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
 					assignTo_arr(sampleValueRectangleList[i], b[i]);//a[i] = b[i];
 				}
 				exp *= 10;
@@ -381,27 +390,41 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 
 		private async Task Algo_BitonicS() {
-			await bitonicSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count, sortingOrder ? 1 : 0 );
+			//await bitonicSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count, sortingOrder ? 1 : 0 );
+
+			for (int k = 2; k <= sampleValueRectangleList.Count; k *= 2) // k is doubled every iteration
+				for (int j = k / 2; j > 0; j /= 2) // j is halved at every iteration, with truncation of fractional parts
+					for (int i = 0; i < sampleValueRectangleList.Count; i++){
+						int l = i ^ j; // in C-like languages this is "i ^ j"
+						if (l > i)
+							if (((i & k) == 0) && (sampleValueRectangleList[i].sampleValue > sampleValueRectangleList[l].sampleValue) ||
+								   ((i & k) != 0) && (sampleValueRectangleList[i].sampleValue < sampleValueRectangleList[l].sampleValue))
+								Swap(sampleValueRectangleList[i], sampleValueRectangleList[l]);
+				}
 		}
+		/*
 		async Task compAndSwap(List<ValueRectanglePair> a, int i, int j, int dir) {
 			int k;
-			await ChangeColor(a[i].sampleRectangle, a[j].sampleRectangle);
+			await RectangleVisualSelection(a[i].sampleRectangle, a[j].sampleRectangle);
 			if (a[i].sampleRectangle.Height > a[j].sampleRectangle.Height)
 				k = 1;
 			else
 				k = 0;
 
 			if (dir == k)
-				VisualSwap(a[i], a[j]);
+				Swap(a[i], a[j]);
 		}
+		*/
 
-		async Task bitonicMerge(List<ValueRectanglePair> a, int low, int cnt, int dir) {
+		private async Task bitonicMerge(List<ValueRectanglePair> a, int low, int cnt, int dir) {
 			if (cnt > 1) {
 				int k = cnt / 2;
 
 				for (int i = low; i < low + k; i++){
-					await ChangeColor(a[i].sampleRectangle, a[i+k].sampleRectangle);
-					await compAndSwap(a, i, i + k, dir); 
+					await RectangleVisualSelection(a[i].sampleRectangle, a[i+k].sampleRectangle);
+					//await compAndSwap(a, i, i + k, dir); 
+					if ( dir == ((a[i].sampleValue > a[i+k].sampleValue)?1:0))
+						Swap(a[i], a[i+k]);
 				}
 
 				await bitonicMerge(a, low, k, dir);
@@ -410,7 +433,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 		}
 
 
-		async Task bitonicSort(List<ValueRectanglePair> a, int low, int cnt, int dir) {
+		private async Task bitonicSort(List<ValueRectanglePair> a, int low, int cnt, int dir) {
 			if (cnt > 1) {
 				int k = cnt / 2;
 

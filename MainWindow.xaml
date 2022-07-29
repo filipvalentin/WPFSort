@@ -19,7 +19,7 @@
             <ComboBoxItem Content="Heap sort"/>
             <ComboBoxItem Content="Counting sort"/>
             <ComboBoxItem Content="Radix sort"/>
-            <ComboBoxItem Content="Bitonic sort"/>
+            <ComboBoxItem Content="Bitonic sort [bugged]"/>
             <!--<ComboBoxItem Content=""/>-->
 
         </ComboBox>
