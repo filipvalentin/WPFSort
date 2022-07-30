@@ -267,8 +267,6 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				Swap(toAssign, new ValueRectanglePair { sampleValue = newValue, sampleRectangle = toSwap });
 			};
 
-			//int max = arr.Max();
-			//int min = arr.Min();
 			int range = maxSample - minSample + 1;
 			int[] count = new int[range];
 			int[] output = new int[sampleValueRectangleList.Count];
@@ -286,18 +284,14 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				count[sampleValueRectangleList[i].sampleValue - minSample]--;
 			}
 			if(sortingOrder){
-			for (int i = 0; i < sampleValueRectangleList.Count; i++) {
-				//arr[i] = output[i];
+			for (int i = 0; i < sampleValueRectangleList.Count; i++) {				
 				await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
-				assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[i]);
-				
+				assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[i]);//arr[i] = output[i];				
 			} }
 			else {
-				for (int i = sampleValueRectangleList.Count - 1; i >=0 ; i--) {
-					//arr[i] = output[i];
+				for (int i = sampleValueRectangleList.Count - 1; i >=0 ; i--) {					
 					await RectangleVisualSelection(sampleValueRectangleList[i].sampleRectangle);
-					assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[sampleValueRectangleList.Count-1-i]);
-
+					assignTo_sampleValueRectangleList(sampleValueRectangleList[i], output[sampleValueRectangleList.Count-1-i]);//arr[i] = output[i];
 				}
 			}
 		}

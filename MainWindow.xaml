@@ -14,7 +14,7 @@
             <ComboBoxItem Content="Naive sort" />
             <ComboBoxItem Content="Bubble sort"/>
             <ComboBoxItem Content="Selection sort"/>
-            <ComboBoxItem Content="Quick sort"/>            
+            <ComboBoxItem Content="Quick sort"/>
             <ComboBoxItem Content="Merge sort"/>
             <ComboBoxItem Content="Heap sort"/>
             <ComboBoxItem Content="Counting sort"/>
@@ -42,7 +42,7 @@
 
         <RadioButton x:Name="customSampleRButton" GroupName="group1" Content="Custom sample" HorizontalAlignment="Left" Margin="15,213,0,0" VerticalAlignment="Top" Checked="RadioButton_CustomSample_Checked" ToolTip="After entering the numbers, press Enter and then the 'Sort' button" />
         <Label Content="Input text [accepts spaces and commas]:" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Width="234"/>
-        <TextBox x:Name="InputTextBox" IsEnabled="False" KeyDown="OnKeyDownHandler_InputBox" HorizontalAlignment="Left" Margin="15,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="122" VerticalScrollBarVisibility="Auto" TextChanged="InputTextBox_TextChanged" />
+        <TextBox x:Name="InputTextBox" IsEnabled="False" KeyDown="OnKeyDownHandler_InputBox" PreviewTextInput="PreviewTextInput_InputTextBox" HorizontalAlignment="Left" Margin="15,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="122" VerticalScrollBarVisibility="Auto" TextChanged="InputTextBox_TextChanged" />
         <Label Content="Output text:" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top" Width="233"/>
         <TextBox x:Name="OutputTextBox" IsEnabled="False" IsReadOnly="True" HorizontalAlignment="Left" Margin="15,404,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Height="129" VerticalScrollBarVisibility="Auto" />
 
@@ -57,8 +57,3 @@
 
     </Grid>
 </Window>
-<!--<Slider x:Name="RandomSample_Slider" Minimum="2" Maximum="100" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="False" HorizontalAlignment="Left" Margin="15,136,0,0" VerticalAlignment="Top" Width="213" />
-        
-        <Label Content="Current max size:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelMaxsize" Content="{Binding ElementName=RandomSample_Slider, Path=Value}" HorizontalAlignment="Left" Margin="110,154,0,0" VerticalAlignment="Top"/>
-        -->

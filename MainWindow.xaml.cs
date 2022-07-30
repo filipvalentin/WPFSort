@@ -175,16 +175,10 @@ namespace WPFSort {
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e) {
             ClearList3();
 
-            if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
-                MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
-                InputTextBox.Text = "";
-            }
-            else {
-                List<int> ints = new();
-                ints = FormatStringToint(InputTextBox.Text.ToCharArray());
-                sampleCount = ints.Count;
-                sampleList = ints;
-            }
+            List<int> ints = new();
+            ints = FormatStringToint(InputTextBox.Text.ToCharArray());
+            sampleCount = ints.Count;
+            sampleList = ints;
 
             AddOnCanvas3(sampleList);
         }

@@ -142,6 +142,14 @@ namespace WPFSort {
             if (RenderTickBox.Text == string.Empty) RenderTickBox.Text = "0";
             pauseSlice = int.Parse(RenderTickBox.Text);
         }
+
+
+
+        private void PreviewTextInput_InputTextBox(object sender, TextCompositionEventArgs e) {
+            Regex regex = new Regex("[^0-9 ]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
     }
 
 }
