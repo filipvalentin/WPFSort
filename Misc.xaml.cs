@@ -148,6 +148,7 @@ namespace WPFSort {
         private void PreviewTextInput_InputTextBox(object sender, TextCompositionEventArgs e) {
             Regex regex = new Regex("[^0-9 ]+");
             e.Handled = regex.IsMatch(e.Text);
+            InputTextBox_TextChanged(null, null);
         }
 
     }
