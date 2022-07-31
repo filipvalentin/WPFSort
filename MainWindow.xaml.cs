@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,22 +29,22 @@ namespace WPFSort {
         }
 
 
-        private void AddOnCanvas3(List<int> toAdd) {
+        private void AddOnCanvas() {
             sampleValueRectangleList = new();
             double reductionRatio = canvas.ActualHeight / maxSample;
 
-            for (int i = 0; i < toAdd.Count; i++) {
+            for (int i = 0; i < sampleList.Count; i++) {
                 Rectangle line = new();
                 line.Stroke = Brushes.Black;
                 line.Fill = Brushes.Black;
                 line.Width = canvas.ActualWidth / sampleCount - 1;
-                line.Height = (double)toAdd[i] * reductionRatio;
+                line.Height = (double)sampleList[i] * reductionRatio;
 
                 canvas.Children.Add(line);
                 Canvas.SetLeft(line, i * (canvas.ActualWidth / sampleCount));
-                Canvas.SetTop(line, canvas.ActualHeight - toAdd[i] * reductionRatio);
+                Canvas.SetTop(line, canvas.ActualHeight - sampleList[i] * reductionRatio);
 
-                sampleValueRectangleList.Add(new ValueRectanglePair { sampleValue = toAdd[i], sampleRectangle = line });
+                sampleValueRectangleList.Add(new ValueRectanglePair { sampleValue = sampleList[i], sampleRectangle = line });
             }
         }
 
@@ -63,7 +62,7 @@ namespace WPFSort {
 
 
         private void RandomSampleButton_Click(object sender, RoutedEventArgs e) {
-            ClearList3();
+            ClearList();
             int count = int.Parse(RandomSampleCountBox.Text);
             int maxsize = int.Parse(RandomSampleSizeBox.Text);
             maxSample = 0;
@@ -80,33 +79,23 @@ namespace WPFSort {
 
             sampleCount = count;
 
-            AddOnCanvas3(sampleList);
+            AddOnCanvas();
         }
 
         private void OnKeyDownHandler_InputBox(object sender, KeyEventArgs e) {     //deprecated
-            ClearList3();
+            ClearList();
+
             if (e.Key == Key.Return) {
 
-                if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
-                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
-                    InputTextBox.Text = "";
-                }
-                else {
+                RenderInputTextBoxContent();
 
-                    List<int> ints = new();
-                    ints = FormatStringToint(InputTextBox.Text.ToCharArray());
-                    sampleCount = ints.Count;
-                    sampleList = ints;
-                    //OutputTextBox.Text += FortmatIntToString(ints);
-                }
+                ClearList();
 
-                ClearList3();
-
-                AddOnCanvas3(sampleList);
+                AddOnCanvas();
             }
         }
 
-        private void ClearList3() {
+        private void ClearList() {
             for (int i = 0; i < sampleValueRectangleList.Count; i++)
                 canvas.Children.Remove(sampleValueRectangleList[i].sampleRectangle);
 
@@ -122,20 +111,12 @@ namespace WPFSort {
             }
             else { //given sample
 
-                if (InputTextBox.Text.Any(x => char.IsLetter(x))) {
-                    MessageBox.Show("You have introduced letters in the text box, I cannot sort them visually!", "Ints only!");
-                    InputTextBox.Text = "";
-                }
-                else {   //de mutat
+                RenderInputTextBoxContent();
 
-                    List<int> ints = new();
-                    ints = FormatStringToint(InputTextBox.Text.ToCharArray());
-                    sampleCount = ints.Count;
-
-                    await Sort();
-                    OutputTextBox.Clear();
-                    OutputTextBox.Text += FortmatRectIntToString();
-                }
+                await Sort();
+                OutputTextBox.Clear();
+                OutputTextBox.Text += FortmatRectIntToString();
+                
             }
 
         }
@@ -173,14 +154,17 @@ namespace WPFSort {
         }
 
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e) {
-            ClearList3();
+            ClearList();
 
-            List<int> ints = new();
-            ints = FormatStringToint(InputTextBox.Text.ToCharArray());
-            sampleCount = ints.Count;
-            sampleList = ints;
+            RenderInputTextBoxContent();
 
-            AddOnCanvas3(sampleList);
+            AddOnCanvas();
+        }
+
+
+        private void RenderInputTextBoxContent() {
+            sampleList = FormatStringToint(InputTextBox.Text.ToCharArray());
+            sampleCount = sampleList.Count;
         }
     }
 }
