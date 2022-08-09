@@ -10,6 +10,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 	public partial class MainWindow : Window {
 
 		int pauseSlice = 1; //miliseconds, the lowest the platform can support
+		int checkPauseSlice = 1;
 		bool sortingOrder; // true = ascending, false = descending
 
 		private async Task RectangleVisualSelection(Rectangle a) {
@@ -28,6 +29,18 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 			a.Stroke = Brushes.Black; a.Fill = Brushes.Black;
 			b.Stroke = Brushes.Black; b.Fill = Brushes.Black;
+		}
+
+		private async Task GlobalCheckVisualSort() {
+			foreach(var rvPair in sampleValueRectangleList) {
+				rvPair.sampleRectangle.Stroke = Brushes.Green;
+				rvPair.sampleRectangle.Fill = Brushes.Green;
+				await Task.Delay(checkPauseSlice);
+			}
+			foreach (var rvPair in sampleValueRectangleList) {
+				rvPair.sampleRectangle.Stroke = Brushes.Black;
+				rvPair.sampleRectangle.Fill = Brushes.Black;
+			}
 		}
 
 		private bool VisualCompare1(Rectangle a, Rectangle b) {
@@ -73,6 +86,7 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 						Swap(sampleValueRectangleList[i], sampleValueRectangleList[j]);
 				}
 			}
+			await GlobalCheckVisualSort();
 		}
 
 
@@ -91,6 +105,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				if (swapped == 0)
 					break;
 			}
+
+			await GlobalCheckVisualSort();
 		}
 
 
@@ -106,12 +122,16 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 				}
 				Swap(sampleValueRectangleList[i], sampleValueRectangleList[min_idx]);
 			}
+
+			await GlobalCheckVisualSort();
 		}
 
 
 
 		private async Task Algo_QuickS() {
 			await quickSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
+
+			await GlobalCheckVisualSort();
 		}
 		async Task<int> partition(List<ValueRectanglePair> arr, int low, int high) {
 			int i = low - 1;
@@ -140,6 +160,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 		
 		private async Task Algo_MergeS() {		//wanky rendering red lines
 			await mergeSort(sampleValueRectangleList, 0, sampleValueRectangleList.Count - 1);
+
+			await GlobalCheckVisualSort();
 		}
 		async Task merge(List<ValueRectanglePair> arr, int l, int m, int r) {
 			int n1 = m - l + 1;
@@ -223,6 +245,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 
 		private async Task Algo_HeapS() {
 			await heapSort(sampleValueRectangleList);
+
+			await GlobalCheckVisualSort();
 		}
 		async Task heapSort(List<ValueRectanglePair> arr) {
 
@@ -302,6 +326,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 			else{
 				await descendingRadixSort();
 			}
+
+			await GlobalCheckVisualSort();
 		}
 
 		private async Task countSort_RadixDedicated(List<ValueRectanglePair> arr, int n, int exp) {
@@ -391,6 +417,8 @@ namespace WPFSort {//23:30 26:06    26:30   2:36
 								   ((i & k) != 0) && (sampleValueRectangleList[i].sampleValue < sampleValueRectangleList[l].sampleValue))
 								Swap(sampleValueRectangleList[i], sampleValueRectangleList[l]);
 				}
+
+			await GlobalCheckVisualSort();
 		}
 		/*
 		async Task compAndSwap(List<ValueRectanglePair> a, int i, int j, int dir) {

@@ -140,6 +140,8 @@ namespace WPFSort {
         private void RenderTickBox_TextChanged(object sender, TextChangedEventArgs e) {
             if (RenderTickBox.Text == string.Empty) RenderTickBox.Text = "0";
             pauseSlice = int.Parse(RenderTickBox.Text);
+            if (RenderTickBox.Text == "0") checkPauseSlice = 0;
+            else checkPauseSlice = 1;
         }
 
 
