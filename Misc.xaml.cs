@@ -27,6 +27,7 @@ namespace WPFSort {
             int i = 0, length = toConvert.Length;
             while (i < length) {
                 int index = i;
+				if (toConvert[i] == ' ') { i++; continue; }
 
                 while (index < length && char.IsDigit(toConvert[index])) {
                     if (index - i > 3) {
